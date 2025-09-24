@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cuenta Regresiva para Geraldine</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    #contador {
+      font-size: 2rem;
+      background: rgba(0,0,0,0.3);
+      padding: 15px 25px;
+      border-radius: 20px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.4);
+      margin-bottom: 20px;
+    }
+    .corazon {
+      font-size: 3rem;
+      margin-top: 10px;
+      animation: latir 1s infinite;
+    }
+    @keyframes latir {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    #descarga {
+      margin-top: 30px;
+    }
+    #botonRegalo {
+      background: #ff4b5c;
+      color: #fff;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      text-decoration: none;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+      transition: 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+    #botonRegalo:hover {
+      background: #e63946;
+    }
+    #mensaje {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 10px 20px;
+      border-radius: 15px;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.3);
+      display: inline-block;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 0.4s ease;
+    }
+    #mensaje.mostrar {
+      opacity: 1;
+      transform: scale(1);
+    }
+    audio {
+      margin-top: 25px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <h1>✨ Faltan para sorprenderte Geraldine ✨</h1>
+  <div id="contador"></div>
+  <div class="corazon">💖</div>
+
+  <!-- Botón que cambia comportamiento -->
+  <div id="descarga">
+    <button id="botonRegalo">🎁 Destapar regalo</button>
+    <div id="mensaje"></div>
+  </div>
+
+  <!-- Player visible con 2 canciones -->
+  <audio id="musica" controls autoplay muted>
+    <source src="https://raw.githubusercontent.com/jodafigueroac/contador/refs/heads/main/Ed%20Sheeran%20-%20photograph%20%20sub%20espa%C3%B1ol.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
+
+  <script>
+    // Fecha objetivo -> 4 de octubre 2025, 05:00 AM
+    const fechaObjetivo = new Date("Oct 4, 2025 05:00:00").getTime();
+
+    // Mensajes divertidos + el especial al final
+    const mensajes = [
+      "😂 Caiste… aún no es el día.",
+      "😏 Intenta mañana…",
+      "⏳ La espera desespera.",
+      "🙃 Paciencia, lo bueno tarda.",
+      "😎 No tan rápido, Geraldine.",
+      "💭 Te juro que valdrá la pena.",
+      "🥳 Falta poco, aguanta.",
+      "🚫 Acceso denegado… todavía.",
+      "🙈 Ups… casi lo logras.",
+      "😉 Jijiji, hoy tampoco.",
+      "😜 El botón es travieso.",
+      "🕒 El tiempo corre lento.",
+      "💫 Suspenso máximo…",
+      "🎭 Esto parece un juego, ¿cierto?",
+      "👀 Te estoy viendo intentar.",
+      "😅 La emoción crece.",
+      "🌹 Para ti vale la espera.",
+      "✨ Casi casi… pero no.",
+      "🔥 El mejor momento está por llegar.",
+      "❤️ TE AMO ❤️"
+    ];
+
+    const contador = document.getElementById("contador");
+    const boton = document.getElementById("botonRegalo");
+    const mensaje = document.getElementById("mensaje");
+
+    const x = setInterval(() => {
+      const ahora = new Date().getTime();
+      const distancia = fechaObjetivo - ahora;
+
+      const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+      if (distancia > 0) {
+        contador.innerHTML = dias + " días " + horas + "h " + minutos + "m " + segundos + "s ";
+
+        // Antes de la fecha -> botón muestra mensajes
+        boton.onclick = () => {
+          const randomMsg = mensajes[Math.floor(Math.random() * mensajes.length)];
+          mensaje.textContent = randomMsg;
+          mensaje.classList.add("mostrar");
+          setTimeout(() => mensaje.classList.remove("mostrar"), 3000);
+        };
+
+      } else {
+        clearInterval(x);
+        contador.innerHTML = "🎉 ¡El regalo ya es tuyo, Geraldine! 💕";
+
+        // Cambia botón al real
+        boton.textContent = "📲 Descargar App";
+        boton.onclick = () => {
+          window.open("https://www.appcreator24.com/app3753022-xrufi8", "_blank");
+        };
+
+        mensaje.style.display = "none";
+      }
+    }, 1000);
+
+    // 🎶 Música: dos canciones en loop
+    const canciones = [
+      "https://raw.githubusercontent.com/jodafigueroac/contador/refs/heads/main/Ed%20Sheeran%20-%20photograph%20%20sub%20espa%C3%B1ol.mp3",
+      "https://raw.githubusercontent.com/jodafigueroac/contador/refs/heads/main/Ed%20Sheeran%20-%20Perfect%20(Sub%20Espa%C3%B1ol%20%20Lyrics).mp3"
+    ];
+
+    let indice = 0;
+    const musica = document.getElementById("musica");
+
+    musica.addEventListener("ended", function() {
+      indice = (indice + 1) % canciones.length;
+      musica.src = canciones[indice];
+      musica.play();
+    });
+
+    document.body.addEventListener("click", function() {
+      musica.muted = false;
+      musica.play().catch(()=>{});
+    }, { once: true });
+  </script>
+</body>
+</html>
